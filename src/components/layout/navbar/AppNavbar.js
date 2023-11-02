@@ -9,7 +9,7 @@ import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled, alpha } from "@mui/material/styles";
-import { Button, Drawer, Divider, List, ListItem, ListItemButton,ListItemText } from "@mui/material";
+import { Button, Drawer, Divider, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { FaSistrix } from "react-icons/fa";
@@ -17,6 +17,8 @@ import { FaEnvelope } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { FaEllipsisV } from "react-icons/fa";
+import { AnimatedIcon } from "./componentsNavBar";
+
 
 const navItems = [
   { texto: "Inicio", path: "/inicio" },
@@ -78,7 +80,6 @@ export const AppNavbar = (props) => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
   const { window } = props;
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -136,7 +137,7 @@ export const AppNavbar = (props) => {
         Profile
       </MenuItem>
       {/* <MenuItem onClick={handleMenuClick}> */}
-        {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
+      {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
       <MenuItem>
         {"Iniciar sesión"}
       </MenuItem>
@@ -163,7 +164,7 @@ export const AppNavbar = (props) => {
         Profile
       </MenuItem>
       {/* <MenuItem onClick={handleMenuClick}> */}
-        {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
+      {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
       <MenuItem>
         {"Iniciar sesión"}
       </MenuItem>
@@ -184,16 +185,26 @@ export const AppNavbar = (props) => {
           >
             <FaBars style={{ fontSize: "1.3rem", color: "black" }} />
           </IconButton>
-          <Typography
-            color="black"
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            FitFashion
-          </Typography>
-
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <AnimatedIcon component={Link} to='/inicio' />
+          </Box>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Typography
+              color="black"
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              {/* FitFashion */}
+              FITFASHION
+            </Typography>
+          </Box>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ mr: 2, display: { xs: "block", sm: "block", md: "none" } }}>
+            <AnimatedIcon component={Link} to='/inicio' />
+          </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", sm: "none", md: "block" } }}>
             {navItems.map((item) => (
@@ -207,9 +218,9 @@ export const AppNavbar = (props) => {
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 1 }} />
-          <Search>
+
+          {/* <Search>
             <SearchIconWrapper>
               <FaSistrix style={{ color: "black" }} />
             </SearchIconWrapper>
@@ -217,9 +228,18 @@ export const AppNavbar = (props) => {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </Search> */}
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Search>
+              <SearchIconWrapper>
+                <FaSistrix style={{ color: "black" }} />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
