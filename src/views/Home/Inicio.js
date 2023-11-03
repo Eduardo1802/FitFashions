@@ -1,10 +1,11 @@
-import React from 'react'
+import * as React from 'react';
+import ProductHero from './ProductHero';
 
 export const Inicio = () => {
   return (
-    <div>
-        <h1>Pagina de inicio</h1>
-        <p>Esta es la pagina de inicio</p>
-    </div>
+    <React.Fragment>
+      <ProductHero />
+
+    </React.Fragment>
   )
 }

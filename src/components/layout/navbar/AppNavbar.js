@@ -9,7 +9,7 @@ import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled, alpha } from "@mui/material/styles";
-import { Button, Drawer, Divider, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { Button, Drawer, Divider, List, ListItem, ListItemButton, ListItemText, Slide, useScrollTrigger } from "@mui/material";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { FaSistrix } from "react-icons/fa";
@@ -19,6 +19,17 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaEllipsisV } from "react-icons/fa";
 import { AnimatedIcon } from "./componentsNavBar";
 
+function HideOnScroll(props) {
+  const { children, window } = props;
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+  });
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
 
 const navItems = [
   { texto: "Inicio", path: "/inicio" },
@@ -172,7 +183,8 @@ export const AppNavbar = (props) => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 8,}}>
+      <HideOnScroll {...props}>
       <AppBar>
         <Toolbar sx={{ background: "white" }}>
           <IconButton
@@ -284,7 +296,7 @@ export const AppNavbar = (props) => {
           </Box>
         </Toolbar>
       </AppBar>
-
+      </HideOnScroll>
       <Box component="nav">
         <Drawer
           container={container}
