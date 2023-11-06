@@ -92,7 +92,7 @@ const ProductCategories = () => {
           component={Link}
           to="/tienda"
         >
-          Secciones
+          Categorías
         </Button>
       </Typography>
       <Box sx={{ mt: 8, display: "flex", flexWrap: "wrap" }}>
