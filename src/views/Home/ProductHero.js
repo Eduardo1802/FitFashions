@@ -12,7 +12,6 @@ const backgroundImage =
   // 'https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Home%2Ffondo4.png?alt=media&token=412c2df6-498b-43fa-aae8-4e3183c47198&_gl=1*15grzzd*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5ODk2MjI5MC4zOS4xLjE2OTg5NjU2NTMuNDMuMC4w'
   // 'https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Home%2Ffondo3.png?alt=media&token=14166e28-651c-45bd-8334-861462eb13ab&_gl=1*a4kvds*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5ODk2MjI5MC4zOS4xLjE2OTg5NjUzNTYuNDguMC4w'
   // 'https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Home%2Ffondo1.png?alt=media&token=e8a3035f-8279-4111-b196-eae6a10ec9a4&_gl=1*9vo1ot*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5ODk2MjI5MC4zOS4xLjE2OTg5NjU0MzYuNTAuMC4w'
-  // 'https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Home%2Ffondo.png?alt=media&token=b8358001-26a7-4f26-a871-af57f3d2195a&_gl=1*1531hog*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5ODk2MjI5MC4zOS4xLjE2OTg5NjI2NzMuMTkuMC4w'
 
 const ProductHero = () => {
   return (
