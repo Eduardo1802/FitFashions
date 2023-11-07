@@ -6,6 +6,10 @@ import Container from "@mui/material/Container";
 import Typography from "../../components/items/Typography";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+import ropa from './png/ropa.png'
+import calzado from './png/calzado.png'
+import equipamiento from './png/equipamiento.png'
+import nutricion from './png/nutricion.png'
 
 const ImageBackdrop = styled("div")(({ theme }) => ({
   position: "absolute",
@@ -57,25 +61,25 @@ const ImageIconButton = styled(ButtonBase)(({ theme }) => ({
 
 const images = [
   {
-    url: "https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Secciones%2Fropa.png?alt=media&token=6d4e7cc2-eba8-454e-891f-f8b5e57e4ac9&_gl=1*1i68leq*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5OTA0ODkyMy40MS4xLjE2OTkwNTA3NTMuMzEuMC4w",
+    url: `${ropa}`,
     title: "ROPA",
     width: "50%",
     path: "/tienda",
   },
   {
-    url: "https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Secciones%2Fcalzado.png?alt=media&token=ddec121d-dfc8-476f-97b6-95c94f52e1cf&_gl=1*1xo6txb*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5OTA0ODkyMy40MS4xLjE2OTkwNDg5MzQuNDkuMC4w",
+    url: `${calzado}`,
     title: "CALZADO",
     width: "50%",
     path: "/tienda",
   },
   {
-    url: "https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Secciones%2Fequipamiento.png?alt=media&token=c9674b60-ba98-4426-a2c3-b8887f6c717c&_gl=1*1wz4z7b*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5OTA0ODkyMy40MS4xLjE2OTkwNDk4MjYuNDkuMC4w",
+    url: `${equipamiento}`,
     title: "EQUIPAMIENTO",
     width: "50%",
     path: "/tienda",
   },
   {
-    url: "https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Secciones%2Fnutricion.png?alt=media&token=c570dc2c-8648-417c-a7ae-f0a0387ab34a&_gl=1*k5467a*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5OTA0ODkyMy40MS4xLjE2OTkwNDk5NDcuNDQuMC4w",    
+    url: `${nutricion}`,
     title: "NUTRICIÓN",
     width: "50%",
     path: "/tienda",

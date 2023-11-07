@@ -6,6 +6,7 @@ import Typography from "../../components/items/Typography";
 import TextField from "../../components/items/TextField";
 import Button from "../../components/items/Button";
 import productCTAImageDots from './png/productCTAImageDots.png'
+import logo from './png/img2.png'
 
 const ProductCTA = () => {
   // const [open, setOpen] = useState(false);
@@ -86,8 +87,8 @@ const ProductCTA = () => {
           />
           <Box
             component="img"
-            // src="https://images.unsplash.com/photo-1527853787696-f7be74f2e39a?auto=format&fit=crop&w=750"
-            src="https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Home%2Ffull_logo.png?alt=media&token=1493d5be-957c-4bbb-9055-1ac086e46d48&_gl=1*ycsckb*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5OTE1OTk4MC40My4xLjE2OTkxNjAxMjUuNS4wLjA."
+            // src="https://firebasestorage.googleapis.com/v0/b/fit-fashions.appspot.com/o/Home%2Ffull_logo.png?alt=media&token=1493d5be-957c-4bbb-9055-1ac086e46d48&_gl=1*ycsckb*_ga*NjQ4NjA4NzUxLjE2OTU0NjExOTc.*_ga_CW55HF8NVT*MTY5OTE1OTk4MC40My4xLjE2OTkxNjAxMjUuNS4wLjA."
+            src={`${logo}`}
             alt="call to action"
             sx={{
               position: 'absolute',
