@@ -64,25 +64,25 @@ const images = [
     url: `${ropa}`,
     title: "ROPA",
     width: "50%",
-    path: "/tienda",
+    path: "/tienda/ropa",
   },
   {
     url: `${calzado}`,
     title: "CALZADO",
     width: "50%",
-    path: "/tienda",
+    path: "/tienda/calzado",
   },
   {
     url: `${equipamiento}`,
     title: "EQUIPAMIENTO",
     width: "50%",
-    path: "/tienda",
+    path: "/tienda/equipamiento",
   },
   {
     url: `${nutricion}`,
     title: "NUTRICIÓN",
     width: "50%",
-    path: "/tienda",
+    path: "/tienda/nutricion",
   },
 ];
 

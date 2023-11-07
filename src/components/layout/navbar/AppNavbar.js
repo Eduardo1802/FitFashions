@@ -144,13 +144,13 @@ export const AppNavbar = (props) => {
       onClose={handleMobileMenuClose}
     >
       {/* <MenuItem onClick={handleMenuClose} component={Link} to="/user/admin"> */}
-      <MenuItem>
+      {/* <MenuItem>
         Profile
-      </MenuItem>
+      </MenuItem> */}
       {/* <MenuItem onClick={handleMenuClick}> */}
       {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
-      <MenuItem>
-        {"Iniciar sesión"}
+      <MenuItem component={Link} to="/acceso">
+        Iniciar sesión
       </MenuItem>
     </Menu>
   );
@@ -171,13 +171,13 @@ export const AppNavbar = (props) => {
       onClose={handleMenuClose}
     >
       {/* <MenuItem onClick={handleMenuClose} component={Link} to="/user/admin"> */}
-      <MenuItem>
+      {/* <MenuItem>
         Profile
-      </MenuItem>
+      </MenuItem> */}
       {/* <MenuItem onClick={handleMenuClick}> */}
       {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
-      <MenuItem>
-        {"Iniciar sesión"}
+      <MenuItem component={Link} to="/acceso">
+        Iniciar sesión
       </MenuItem>
     </Menu>
   );

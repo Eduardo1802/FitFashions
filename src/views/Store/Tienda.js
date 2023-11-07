@@ -4,7 +4,7 @@ import { Bread } from "../../components/customs/Bread";
 import { WrapperSingleRoute } from "../../components/customs/WrapperSingleRoute";
 import HomeIcon from '@mui/icons-material/Home';
 import StoreIcon from '@mui/icons-material/Store';
-// import ProductCategories from '../Home/ProductCategories';
+import ProductCategories from './ProductCategories';
 
 export const Tienda = () => {
   return (
@@ -20,7 +20,7 @@ export const Tienda = () => {
           />
         </Grid>
       </Grid>
-      {/* <ProductCategories /> */}
+      <ProductCategories />
     </WrapperSingleRoute>
   );
 };

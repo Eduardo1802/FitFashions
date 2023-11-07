@@ -8,6 +8,10 @@ import { AvisoDePrivacidad } from '../views/Privaty/AvisoDePrivacidad'
 import { Tienda } from '../views/Store/Tienda'
 import { AppNavbar } from '../components/layout/navbar/AppNavbar'
 import { AppFooter } from '../components/layout/footer/AppFooter'
+import Ropa from "../views/Store/Ropa/Ropa"
+import Calzado from "../views/Store/Calzado/Calzado"
+import Equipamiento from "../views/Store/Equipamiento/Equipamiento"
+import Nutricion from "../views/Store/Nutricion/Nutricion"
 import ScrollToTop from '../components/items/ScrollToTop'
 
 export const Router = () => {
@@ -19,12 +23,16 @@ export const Router = () => {
             <Route path='/' element={<Inicio/>} />
             <Route path='/inicio' element={<Inicio/>} />
             <Route path='/sobre-nosotros' element={<Nosotros/>} />
-            <Route path='/inicio-sesion' element={<Acceso/>} />
+            <Route path='/acceso' element={<Acceso/>} />
             <Route path='/registro' element={<Registro/>} />
             <Route path='/aviso-de-privacidad' element={<AvisoDePrivacidad/>} />
 
             <Route path="/tienda/" >
               <Route index element={<Tienda />} />
+              <Route path="ropa" element={<Ropa />} />
+              <Route path="calzado" element={<Calzado />} />
+              <Route path="equipamiento" element={<Equipamiento />} />
+              <Route path="nutricion" element={<Nutricion />} />
             </Route>
 
             <Route path='*' element={"error"} />
