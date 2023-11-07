@@ -118,7 +118,7 @@ export const AppFooter = () => {
                 }}
               >
                 <Typography variant="body1" sx={{ color: "black" }}>
-                  &#169; Corazón Huasteco 2023
+                  &#169; Fit Fashion 2023
                 </Typography>
               </Grid>
             </Grid>
@@ -162,9 +162,7 @@ export const AppFooter = () => {
               Sobre nosotros
             </Typography>
             <LinkStyled to="sobre-nosotros">Acerca de nosotros</LinkStyled>
-            <LinkStyled to="sobre-nosotros">
-              Misión, visión y valores
-            </LinkStyled>
+            <LinkStyled to="sobre-nosotros">Misión, visión y valores</LinkStyled>
             <LinkStyled to="sobre-nosotros">Términos y condiciones</LinkStyled>
             <LinkStyled to="sobre-nosotros">Políticas de privacidad</LinkStyled>
           </Grid>
