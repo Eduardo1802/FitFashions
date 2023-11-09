@@ -40,7 +40,8 @@ export const FormAcceso = () => {
     <Container maxWidth="sm">
       <Paper sx={{ p: 2 }} elevation={0}>
         <Typography variant="h4" color="black" textAlign="center">
-          Inicia sesión en FitFashion
+          Inicia sesión 
+          {/* en FitFashion */}
         </Typography>
         <Typography variant="body1" color="black" textAlign="center" mb={3}>
           Descubre, adquiere y comparte tus opiniones sobre los productos
@@ -167,7 +168,7 @@ export const FormAcceso = () => {
             <Grid item xs>
               <Typography textAlign="center" variant="body2">
                 <Link
-                  to="/acceso/restaurar-pass"
+                  // to="/acceso/restaurar-pass"
                   aria-label="ir a la sección de restaurar contraseña"
                 >
                   Restablecer

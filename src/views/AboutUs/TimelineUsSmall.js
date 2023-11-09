@@ -75,7 +75,7 @@ const TimelineUsSmall = ({ imgAus, imgMural }) => {
       {/* MISIÓN Y VISIÓN */}
       <TimelineItem>
         <TimelineSeparator>
-          <TimelineDot color="primary" />
+          <TimelineDot color="secondary" />
           <TimelineConnector />
         </TimelineSeparator>
         <TimelineContent>
