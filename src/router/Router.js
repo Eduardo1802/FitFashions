@@ -8,6 +8,7 @@ import { TerminosCondiciones } from '../views/Privaty/TerminosCondiciones'
 import { Tienda } from '../views/Store/Tienda'
 import { AppNavbar } from '../components/layout/navbar/AppNavbar'
 import { AppFooter } from '../components/layout/footer/AppFooter'
+import { Politicas } from '../views/Privaty/Politicas'
 import Ropa from "../views/Store/Ropa/Ropa"
 import Calzado from "../views/Store/Calzado/Calzado"
 import Equipamiento from "../views/Store/Equipamiento/Equipamiento"
@@ -26,6 +27,7 @@ export const Router = () => {
             <Route path='/acceso' element={<Acceso/>} />
             <Route path='/registro' element={<Registro/>} />
             <Route path='/terminos-y-condiciones' element={<TerminosCondiciones/>} />
+            <Route path='/politicas-de-privacidad' element={<Politicas/>} />
 
             <Route path="/tienda/" >
               <Route index element={<Tienda />} />

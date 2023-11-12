@@ -164,7 +164,7 @@ export const AppFooter = () => {
             <LinkStyled to="sobre-nosotros">Acerca de nosotros</LinkStyled>
             <LinkStyled to="sobre-nosotros">Misión, visión y valores</LinkStyled>
             <LinkStyled to="terminos-y-condiciones">Términos y condiciones</LinkStyled>
-            <LinkStyled to="sobre-nosotros">Políticas de privacidad</LinkStyled>
+            <LinkStyled to="politicas-de-privacidad">Políticas de privacidad</LinkStyled>
           </Grid>
           {/* SOPORTE */}
           <Grid
