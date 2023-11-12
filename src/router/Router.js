@@ -4,7 +4,7 @@ import { Inicio } from '../views/Home/Inicio'
 import { Nosotros } from '../views/AboutUs/Nosotros'
 import { Acceso } from '../views/Access/Acceso'
 import { Registro } from '../views/Register/Registro'
-import { AvisoDePrivacidad } from '../views/Privaty/AvisoDePrivacidad'
+import { TerminosCondiciones } from '../views/Privaty/TerminosCondiciones'
 import { Tienda } from '../views/Store/Tienda'
 import { AppNavbar } from '../components/layout/navbar/AppNavbar'
 import { AppFooter } from '../components/layout/footer/AppFooter'
@@ -25,7 +25,7 @@ export const Router = () => {
             <Route path='/sobre-nosotros' element={<Nosotros/>} />
             <Route path='/acceso' element={<Acceso/>} />
             <Route path='/registro' element={<Registro/>} />
-            <Route path='/aviso-de-privacidad' element={<AvisoDePrivacidad/>} />
+            <Route path='/terminos-y-condiciones' element={<TerminosCondiciones/>} />
 
             <Route path="/tienda/" >
               <Route index element={<Tienda />} />
