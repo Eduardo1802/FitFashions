@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,7 +9,19 @@ import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled, alpha } from "@mui/material/styles";
-import { Button, Drawer, Divider, List, ListItem, ListItemButton, ListItemText, Slide, useScrollTrigger } from "@mui/material";
+import { db } from "../../../config/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import {
+  Button,
+  Drawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Slide,
+  useScrollTrigger,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { FaSistrix } from "react-icons/fa";
@@ -18,6 +30,7 @@ import { FaBell } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { FaEllipsisV } from "react-icons/fa";
 import { AnimatedIcon } from "./componentsNavBar";
+import { useAuth } from "../../context/AuthContext";
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -53,6 +66,48 @@ export const AppNavbar = (props) => {
   const mobileMenuId = "primary-search-account-menu-mobile";
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const { logout, user } = useAuth();
+  // const [open, setOpen] = useState(false);
+  const [userData, setUserData] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        let intentos = 0;
+  
+        while (intentos < 3) {
+          try {
+            const userDocRef = doc(db, `usuarios/${user.uid}`);
+            const userDocSnap = await getDoc(userDocRef);
+  
+            if (userDocSnap.exists()) {
+              const userData = userDocSnap.data();
+              console.log("userData:", userData);
+              setUserData(userData);
+            }
+            // Salir del bucle si es exitoso
+            break;
+          } catch (error) {
+            console.error("Error al obtener datos del usuario:", error);
+  
+            // Verificar si el error está relacionado con el cliente estando fuera de línea
+            if (error.code === 'unavailable') {
+              console.log('Reintentando...');
+              intentos++;
+              // Agregar una pausa antes de volver a intentar
+              await new Promise(resolve => setTimeout(resolve, 1000));
+            } else {
+              // Si el error no está relacionado con estar fuera de línea, salir del bucle
+              break;
+            }
+          }
+        }
+      }
+    };
+  
+    fetchData();
+  }, [user]);
+  
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -76,7 +131,6 @@ export const AppNavbar = (props) => {
     color: "black",
     "& .MuiInputBase-input": {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create("width"),
       width: "100%",
@@ -125,8 +179,7 @@ export const AppNavbar = (props) => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-  // const handleMenuClick = user ? handleLogout : handleLogin;
-  // const handleMenuClick = user ? handleLogout : handleLogin;
+
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -143,17 +196,27 @@ export const AppNavbar = (props) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {/* <MenuItem onClick={handleMenuClose} component={Link} to="/user/admin"> */}
-      {/* <MenuItem>
-        Profile
-      </MenuItem> */}
-      {/* <MenuItem onClick={handleMenuClick}> */}
-      {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
-      <MenuItem component={Link} to="/acceso">
-        Iniciar sesión
-      </MenuItem>
+      {user && userData ? (
+        [
+          <MenuItem
+            key="profile"
+            component={Link}
+            to={`/${userData.tipo_usuario}`}
+          >
+            Perfil
+          </MenuItem>,
+          <MenuItem key="logout" onClick={logout}>
+            Cerrar sesión
+          </MenuItem>,
+        ]
+      ) : (
+        <MenuItem key="login" component={Link} to="/acceso">
+          Iniciar sesión
+        </MenuItem>
+      )}
     </Menu>
   );
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -170,132 +233,133 @@ export const AppNavbar = (props) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {/* <MenuItem onClick={handleMenuClose} component={Link} to="/user/admin"> */}
-      {/* <MenuItem>
-        Profile
-      </MenuItem> */}
-      {/* <MenuItem onClick={handleMenuClick}> */}
-      {/* {user ? "Cerrar sesión" : "Iniciar sesión"} */}
-      <MenuItem component={Link} to="/acceso">
-        Iniciar sesión
-      </MenuItem>
+      {user && userData ? (
+        [
+          <MenuItem
+            key="profile"
+            component={Link}
+            to={`/${userData.tipo_usuario}`}
+          >
+            Perfil
+          </MenuItem>,
+          <MenuItem key="logout" onClick={logout}>
+            Cerrar sesión
+          </MenuItem>,
+        ]
+      ) : (
+        <MenuItem key="login" component={Link} to="/acceso">
+          Iniciar sesión
+        </MenuItem>
+      )}
     </Menu>
   );
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: 8,}}>
+    <Box sx={{ flexGrow: 1, marginBottom: 8 }}>
       <HideOnScroll {...props}>
-      <AppBar>
-        <Toolbar sx={{ background: "white" }}>
-          <IconButton
-            size="large"
-            edge="start"
-            color="black"
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { xs: "block", sm: "block", md: "none" } }}
-          >
-            <FaBars style={{ fontSize: "1.3rem", color: "black" }} />
-          </IconButton>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <AnimatedIcon component={Link} to='/inicio' />
-          </Box>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Typography
+        <AppBar>
+          <Toolbar sx={{ background: "white" }}>
+            <IconButton
+              size="large"
+              edge="start"
               color="black"
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
+              aria-label="open drawer"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { xs: "block", sm: "block", md: "none" } }}
             >
-              {/* FitFashion */}
-              FITFASHION
-            </Typography>
-          </Box>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ mr: 2, display: { xs: "block", sm: "block", md: "none" } }}>
-            <AnimatedIcon component={Link} to='/inicio' />
-          </Box>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", sm: "none", md: "block" } }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.path}
-                sx={{ color: "black" }}
-                component={Link}
-                to={item.path}
+              <FaBars style={{ fontSize: "1.3rem", color: "black" }} />
+            </IconButton>
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <AnimatedIcon component={Link} to="/inicio" />
+            </Box>
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <Typography
+                color="black"
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
               >
-                {item.texto}
-              </Button>
-            ))}
-          </Box>
-          <Box sx={{ flexGrow: 1 }} />
+                {/* FitFashion */}
+                FITFASHION
+              </Typography>
+            </Box>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }} />
+            <Box
+              sx={{ mr: 2, display: { xs: "block", sm: "block", md: "none" } }}
+            >
+              <AnimatedIcon component={Link} to="/inicio" />
+            </Box>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: "none", sm: "none", md: "block" } }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.path}
+                  sx={{ color: "black" }}
+                  component={Link}
+                  to={item.path}
+                >
+                  {item.texto}
+                </Button>
+              ))}
+            </Box>
+            <Box sx={{ flexGrow: 1 }} />
 
-          {/* <Search>
-            <SearchIconWrapper>
-              <FaSistrix style={{ color: "black" }} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search> */}
-
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Search>
-              <SearchIconWrapper>
-                <FaSistrix style={{ color: "black" }} />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="black"
-            >
-              <Badge badgeContent={0} color="error">
-                <FaEnvelope style={{ fontSize: "1.4rem", color: "black" }} />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={0} color="error">
-                <FaBell style={{ fontSize: "1.4rem", color: "black" }} />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="black"
-            >
-              <FaUserCircle style={{ fontSize: "1.4rem", color: "black" }} />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="black"
-            >
-              <FaEllipsisV style={{ fontSize: "1.1rem", color: "black" }} />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <Search>
+                <SearchIconWrapper>
+                  <FaSistrix style={{ color: "black" }} />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </Search>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="black"
+              >
+                <Badge badgeContent={0} color="error">
+                  <FaEnvelope style={{ fontSize: "1.4rem", color: "black" }} />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={0} color="error">
+                  <FaBell style={{ fontSize: "1.4rem", color: "black" }} />
+                </Badge>
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="black"
+              >
+                <FaUserCircle style={{ fontSize: "1.4rem", color: "black" }} />
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="black"
+              >
+                <FaEllipsisV style={{ fontSize: "1.1rem", color: "black" }} />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </AppBar>
       </HideOnScroll>
       <Box component="nav">
         <Drawer
@@ -304,7 +368,7 @@ export const AppNavbar = (props) => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "block", md: "none" },
@@ -320,5 +384,5 @@ export const AppNavbar = (props) => {
       {renderMobileMenu}
       {renderMenu}
     </Box>
-  )
-}
+  );
+};

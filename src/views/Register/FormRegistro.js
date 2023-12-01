@@ -1,32 +1,125 @@
-import React from "react";
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+// import Link from "@mui/material/Link";
+import { Link } from "react-router-dom";
+import { Form, FormSpy } from "react-final-form";
+import Typography from "../../components/items/Typography";
+// import AppForm from "./AppForm";
+import { required } from "../../components/form/validation";
+import FormButton from "../../components/form/FormButton";
+import FormFeedback from "../../components/form/FormFeedback";
 import {
-  Container,
-  Grid,
-  Paper,
-  Box,
-  Typography,
   TextField,
   IconButton,
   InputAdornment,
-  Button,
-  // Collapse,
-  //   MenuItem,
-  //   Checkbox,
-  //   FormControlLabel,
+  Container,
+  Paper,
 } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
-import { Form } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import {
-    usePassword,
-    handleMouseDownPassword,
-} from "../../components/context/UsePassword"
+import { useNavigate } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useAuth } from "../../components/context/AuthContext";
+import { db } from "../../config/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 const FormRegistro = () => {
-  const [showPassword, handleClickShowPassword] = usePassword(false);
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isPasswordValid =
+    password.length > 0 &&
+    /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}/.test(
+      password
+    );
+  const isSubmitDisabled =
+    !firstName || !lastName || !email || !isPasswordValid;
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  
+  const validate = (values) => {
+    const errors = required(
+      ["firstName", "lastName", "email", "password"],
+      values
+      );
+      
+      if (!errors.email) {
+        const emailError = email(values.email);
+        if (emailError) {
+          errors.email = emailError;
+        }
+      }
+      return errors;
+    };
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (isSubmitDisabled) return;
+
+    try {
+      const info = await signup(email, password);
+      console.log("Info:", info);
+
+      const referencia = doc(db, "usuarios", info.user.uid);
+      const querySnapshot = await getDoc(referencia);
+
+      if (querySnapshot.exists()) {
+        console.log("El correo ya está registrado");
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Correo existente",
+          text: "La dirección de correo electrónico ya está registrada. Por favor, utiliza otro correo electrónico.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        return;
+      }
+
+      await setDoc(referencia, {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        tipo_Usuario: "consultador",
+      });
+
+      // Mostrar mensaje de registro exitoso
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "¡Registro exitoso!",
+        text: "Ahora estás registrado. ¡Bienvenido!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // Puedes agregar más lógica aquí si es necesario
+
+      navigate("/inicio");
+    } catch (error) {
+      console.log("Error:", error);
+
+      if (error.code === "auth/email-already-in-use") {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Correo existente",
+          text: "La dirección de correo electrónico ya está registrada. Por favor, utiliza otro correo electrónico.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } 
+    }
+    };
 
   return (
     <Container maxWidth="sm">
@@ -38,155 +131,168 @@ const FormRegistro = () => {
         >
           Crea una cuenta nueva
         </Typography>
-        <Box
-          component={Form}
-          //   onSubmit={formik.handleSubmit}
-          sx={{
-            "& > :not(style)": { my: { md: 1, sm: 0.75, xs: 0.5 } },
-          }}
+        <Form
+          onSubmit={handleSubmit}
+          subscription={{ submitting: true }}
+          validate={validate}
         >
-          {/* NOMBRE Y APELLIDOS */}
-          <Grid container spacing={1}>
-            <Grid item md={6} sm={6} xs={12}>
-              {/* NOMBRE */}
-              <TextField
-                component={Form.Input}
-                fullWidth
-                label="Nombre(s)"
-                type="text"
-                name="name"
-                color="secondary"
-                // onChange={formik.handleChange}
-                // error={formik.errors.name ? true : false}
-                // helperText={formik.errors.name}
-                // value={formik.values.name}
-                autoComplete="off"
-                aria-label="por favor ingresa tu nombre"
-              />
-            </Grid>
-            <Grid item md={6} sm={6} xs={12}>
-              {/* APELLIDOS */}
-              <TextField
-                component={Form.Input}
-                fullWidth
-                label="Apellidos"
-                type="text"
-                name="lastName"
-                color="secondary"
-
-                // onChange={formik.handleChange}
-                // error={formik.errors.lastName ? true : false}
-                // helperText={formik.errors.lastName}
-                // value={formik.values.lastName}
-                autoComplete="off"
-                aria-label="por favor ingresa tus apellidos"
-              />
-            </Grid>
-          </Grid>
-          {/* <Grid item xs={12} md={9}>
-              <TextField
-                fullWidth
-                label="Correo electronico"
-                type="text"
-                name="email"
-                // onChange={(e) => {
-                //   formik.handleChange(e);
-                //   setEmail(e.target.value);
-                // }}
-                // error={formik.errors.email ? true : false}
-                // helperText={formik.errors.email}
-                // value={formik.values.email || email}
-                // disabled={estado ? true : false}
-                autoComplete="off"
-                aria-label="por favor ingresa tu correo electronico"
-              />
-            </Grid> */}
+          {({ handleSubmit: handleSubmit2, submitting }) => (
             <Box
-              sx={{
-                "& > :not(style)": { my: { md: 1, sm: 0.75, xs: 1 } },
-              }}
+              component="form"
+              onSubmit={handleSubmit2}
+              noValidate
+              sx={{ mt: 6 }}
             >
-                <TextField
-                fullWidth
-                label="Correo electronico"
-                type="text"
-                name="email"
-                // onChange={(e) => {
-                //   formik.handleChange(e);
-                //   setEmail(e.target.value);
-                // }}
-                // error={formik.errors.email ? true : false}
-                // helperText={formik.errors.email}
-                // value={formik.values.email || email}
-                // disabled={estado ? true : false}
-                autoComplete="off"
-                aria-label="por favor ingresa tu correo electronico"
-              />
-              {/* CONTRASEÑA */}
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Nombre"
+                    name="firstName"
+                    value={firstName || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const regex = /^[a-zA-Z\s]*$/;
+
+                      if (regex.test(value)) {
+                        const formattedValue =
+                          value.charAt(0).toUpperCase() + value.slice(1);
+
+                        setFirstName(formattedValue);
+                      }
+                    }}
+                    required
+                    error={
+                      firstName.length === 0 ||
+                      firstName.length < 3 ||
+                      firstName.length > 30
+                    }
+                    helperText={
+                      firstName.length === 0
+                        ? "El nombre no puede estar vacío"
+                        : firstName.length < 3
+                        ? "El nombre no puede tener menos de 3 caracteres"
+                        : firstName.length > 30
+                        ? "El nombre no puede tener más de 30 caracteres"
+                        : ""
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Apellido"
+                    name="LastName"
+                    value={lastName || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const regex = /^[a-zA-Z\s]*$/;
+
+                      if (regex.test(value)) {
+                        const formattedValue =
+                          value.charAt(0).toUpperCase() + value.slice(1);
+
+                        setLastName(formattedValue);
+                      }
+                    }}
+                    required
+                    error={
+                      lastName.length === 0 ||
+                      lastName.length < 3 ||
+                      lastName.length > 30
+                    }
+                    helperText={
+                      lastName.length === 0
+                        ? "El apellido no puede estar vacío"
+                        : lastName.length < 3
+                        ? "El apellido no puede tener menos de 3 caracteres"
+                        : lastName.length > 30
+                        ? "El apellido no puede tener más de 30 caracteres"
+                        : ""
+                    }
+                  />
+                </Grid>
+              </Grid>
+              <br />
               <TextField
-                component={Form.Input}
+                fullWidth
+                label="Correo electrónico"
+                name="email"
+                type="email"
+                value={email || ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setEmail(value);
+                }}
+                required
+                error={email.length === 0 || !/\S+@\S+\.\S+/.test(email)}
+                helperText={
+                  email.length === 0
+                    ? "El correo electrónico no puede estar vacío"
+                    : !/\S+@\S+\.\S+/.test(email)
+                    ? "Ingrese un correo electrónico válido"
+                    : ""
+                }
+              />
+              <br />
+              <br />
+              <TextField
                 fullWidth
                 label="Contraseña"
-                // type={showPassword ? "text" : "password"}
                 name="password"
-                autoComplete="off"
-                aria-label="por favor ingresa tu contraseña"
-                // onChange={formik.handleChange}
-                // error={formik.errors.password ? true : false}
-                // helperText={formik.errors.password}
-                // value={formik.values.password}
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                error={!isPasswordValid}
+                helperText={
+                  !isPasswordValid
+                    ? "La contraseña debe tener al menos 5 caracteres, incluyendo al menos 1 letra minúscula, 1 letra mayúscula, 1 número y 1 carácter especial."
+                    : ""
+                }
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        aria-label="mostrar u ocultar contraseña"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      <IconButton onClick={toggleShowPassword}>
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
               />
-              {/* BOTONES */}
+              <FormSpy subscription={{ submitError: true }}>
+                {({ submitError }) =>
+                  submitError ? (
+                    <FormFeedback error sx={{ mt: 2 }}>
+                      {submitError}
+                    </FormFeedback>
+                  ) : null
+                }
+              </FormSpy>
+              <FormButton
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  minWidth: 200,
+                }}
+                color="secondary"
+                fullWidth
+                type="submit"
+                onClick={handleSubmit}
+                disabled={isSubmitDisabled}
+              >
+                Registrar
+              </FormButton>
               <Grid container spacing={1}>
-                <Grid item xs={12} md={6}>
-                  <Button
-                    aria-label="enviar formulario para registro en corazon huasteco"
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    endIcon={<LoginIcon />}
-                    color="secondary"
-                  >
-                    Registrar
-                  </Button>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Button
-                    aria-label="limpiar formulario de registro en corazón huasteco"
-                    type="button"
-                    fullWidth
-                    variant="outlined"
-                    color="secondary"
-                    // onClick={formik.handleReset}
-                    endIcon={<DeleteIcon />}
-                  >
-                    Limpiar
-                  </Button>
+                <Grid item xs>
+                  <Typography textAlign="center" variant="body1">
+                    ¿Tienes cuenta? <Link to="/acceso" aria-label="ir a la sección de iniciar sesion">inicia sesión</Link>
+                  </Typography>
                 </Grid>
               </Grid>
             </Box>
-            {/* enlaces */}
-          <Grid container spacing={1}>
-              <Grid item xs>
-                <Typography textAlign="center" variant="body1">
-                  ¿Tienes cuenta? <Link to="/acceso" aria-label="ir a la sección de iniciar sesion">inicia sesión</Link>
-                </Typography>
-              </Grid>
-            </Grid>
-        </Box>
+          )}
+        </Form>
       </Paper>
     </Container>
   );

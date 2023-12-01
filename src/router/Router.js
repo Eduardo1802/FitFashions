@@ -9,11 +9,15 @@ import { Tienda } from '../views/Store/Tienda'
 import { AppNavbar } from '../components/layout/navbar/AppNavbar'
 import { AppFooter } from '../components/layout/footer/AppFooter'
 import { Politicas } from '../views/Privaty/Politicas'
+import { ProtectedRoute } from "../components/customs/ProtectedRoute";
+import { ProtecteRoutAdmi } from "../components/customs/ProtecteRoutAdmi";
 import Ropa from "../views/Store/Ropa/Ropa"
 import Calzado from "../views/Store/Calzado/Calzado"
 import Equipamiento from "../views/Store/Equipamiento/Equipamiento"
 import Nutricion from "../views/Store/Nutricion/Nutricion"
 import ScrollToTop from '../components/items/ScrollToTop'
+import Consultador from "../views/Profile/Consultador/Consultador";
+import Administrador from "../views/Profile/Administrador/Administrador";
 
 export const Router = () => {
   return (
@@ -26,6 +30,10 @@ export const Router = () => {
             <Route path='/sobre-nosotros' element={<Nosotros/>} />
             <Route path='/acceso' element={<Acceso/>} />
             <Route path='/registro' element={<Registro/>} />
+            {/* <Route path="/consultador" element={<ProtectedRoute><Consultador /></ProtectedRoute>} />
+            <Route path="/administrador" element={<ProtecteRoutAdmi><Administrador /></ProtecteRoutAdmi>} /> */}
+            <Route path="/consultador" element={<Consultador />} />
+            <Route path="/administrador" element={<Administrador />} />
             <Route path='/terminos-y-condiciones' element={<TerminosCondiciones/>} />
             <Route path='/politicas-de-privacidad' element={<Politicas/>} />
 

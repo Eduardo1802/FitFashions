@@ -3,7 +3,7 @@ import {Box, Grid, Paper} from '@mui/material';
 import { Bread } from '../../components/customs/Bread';
 import { HomeRounded, LoginRounded } from '@mui/icons-material';
 import { ImgAcceso } from './ImgAcceso';
-import { FormAcceso } from './FormAcceso';
+import FormAcceso from './FormAcceso';
 
 export const Acceso = () => {
   return (

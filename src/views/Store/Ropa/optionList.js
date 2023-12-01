@@ -1,35 +1,33 @@
 export const colores = [
     { value: 'Todos', label: 'Todos'},
+    // { value: 'blanco', label: 'Blanco' },
+    { value: 'verde', label: 'Verde' },
+    { value: 'naranja', label: 'Naranja' },
+    // { value: 'negro', label: 'Negro' },
+    { value: 'amarillo', label: 'Amarillo' },
     // { value: 'rojo', label: 'Rojo'},
-    { value: 'blanco', label: 'Blanco' },
     // { value: 'azul', label: 'Azul' },
     // { value: 'rosa', label: 'Rosa' },
     // { value: 'morado', label: 'Morado' },
     // { value: 'beige', label: 'Beige' },
     // { value: 'cafe', label: 'Cafe' },
     // { value: 'gris', label: 'Gris' },
-    // { value: 'verde', label: 'Verde' },
-    { value: 'negro', label: 'Negro' },
 ]
 
 export const tallas = [
     { value: 'Todos', label: 'Todos'},
-    // { value: '23', label: '23 cm'},
-    // { value: '24', label: '24 cm'},
-    { value: 25 , label: '25 cm'},
-    { value: 26, label: '26 cm'},
-    { value: 27, label: '27 cm'},
-    // { value: '28', label: '28 cm'},
-    // { value: '29', label: '29 cm'},
-    // { value: '30', label: '30 cm'},
-    // { value: '31', label: '31 cm'},
+    // { value: 'xs', label: 'XS'},
+    { value: 's', label: 'S'},
+    { value: 'm', label: 'M'},
+    { value: 'l', label: 'L'},
+    // { value: 'xl', label: 'XL'},
 ]
 
 export const marcas = [
     { value: 'Todos', label: 'Todos'},
     { value: 'Nike', label: 'Nike' },
-    { value: 'Adidas', label: 'Adidas'},
-    { value: 'Puma', label: 'Puma' },
+    { value: 'adidas', label: 'Adidas'},
+    // { value: 'puma', label: 'Puma' },
 ]
 
 export const generos = [

@@ -24,27 +24,112 @@ const Calzado = () => {
   const handleClickOpen = (project) => {
     setSelectedProject(project);
     setOpen(true);
+    console.log(selectedProject)
+    console.log(open)
   };
+
+  const [proyectos, setProyectos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [busqueda, setBusqueda] = useState("");
+  const [tablaProyectos, setTablaProyectos] = useState([]);
+  const [docs, setDocs] = useState([]);
+
+  const recuperarDatosLocalmente = async () => {
+    try {
+      const datos = localStorage.getItem('productos');
+      if (datos !== null) {
+        const datosParseados = JSON.parse(datos);
+        const datosFiltrados = datosParseados.filter(item => item.categoria === 'calzado');
+        // console.log(datosFiltrados);
+        setProyectos(datosFiltrados)
+        setDocs(datosFiltrados);
+        setTablaProyectos(datosFiltrados);
+        console.log("Productos obtenidos del Storage.")
+      }else{
+        const productoSnapshot = await app.firestore().collection("productos").get();
+        const productoData = productoSnapshot.docs.filter((doc) => doc.data().categoria === "calzado");
+        setProyectos(productoData)
+        setDocs(productoData);
+        setTablaProyectos(productoData);
+        console.log("Productos obtenidos de firebase.")
+      }
+    } catch (error) {
+      console.error('Error al recuperar datos locales:', error);
+    }
+  }
+  // const obtenerInfo = async () => {
+  //   const docList = await app.firestore().collection("productos").get();
+  //   const data = docList.docs.filter(
+  //     (doc) => doc.data().categoria === "calzado"
+  //   );
+  //   setProyectos(data);
+  //   // console.log(data)
+  //   setDocs(data);
+  //   setTablaProyectos(data);
+  // };
+
+  const handleChange = e => {
+    setBusqueda(e.target.value);
+    filtrar(e.target.value.toString().toUpperCase());
+    // console.log(e.target.value);
+  }
+
+  const filtrar = (terminoBusqueda) => {
+    // eslint-disable-next-line
+   var resultadoBusqueda = tablaProyectos.filter((elemento) => {
+     if (elemento.modelo.includes(terminoBusqueda)) {
+       return elemento;
+     }
+   });
+   setProyectos(resultadoBusqueda);
+   setDocs(resultadoBusqueda);
+   console.log(isLoading)
+   console.log(docs)
+  }
 
   const [color, setColor] = useState("");
   const [talla, setTalla] = useState("");
   const [marca, setMarca] = useState("");
   const [genero, setGenero] = useState("");
-  const [proyectos, setProyectos] = useState([]);
 
-  const obtenerInfo = async () => {
-    const docList = await app.firestore().collection("productos").get();
-    const data = docList.docs.filter(
-      (doc) => doc.data().categoria === "calzado"
-    );
-    setProyectos(data);
-    // console.log(data)
-    // setDocs(listHombre);
-    // setTablaProyectos(listHombre);
+  const handleSearch = async () => {
+    try {
+      const datos = localStorage.getItem('productos');
+      const datosParseados = JSON.parse(datos);
+      let filteredData = datosParseados.filter(item => item.categoria === 'calzado');
+  
+      if (color !== "Todos" && color !== "") {
+        filteredData = filteredData.filter(item => item.color === color);
+      }
+  
+      if (talla !== "Todos" && talla !== "") {
+        filteredData = filteredData.filter(item => item.talla === talla);
+      }
+  
+      if (genero !== "Todos" && genero !== "") {
+        filteredData = filteredData.filter(item => item.genero === genero);
+      }
+  
+      if (marca !== "Todos" && marca !== "") {
+        filteredData = filteredData.filter(item => item.marca === marca);
+      }
+  
+      setProyectos(filteredData);
+  
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    obtenerInfo();
+    recuperarDatosLocalmente()
+    // Simulamos una carga de datos de 2 segundos
+    const timeoutId = setTimeout(() => {
+      // Una vez que se han cargado los datos, actualizamos el estado
+      setIsLoading(false);
+    }, 1000);
+    // Limpiamos el timeout si el componente se desmonta antes de que termine la carga
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
@@ -81,8 +166,8 @@ const Calzado = () => {
               <StyledInputBase
                 placeholder="Buscar…"
                 inputProps={{ "aria-label": "search" }}
-                // value={busqueda}
-                // onChange={handleChange}
+                value={busqueda}
+                onChange={handleChange}
               />
             </Search>
           </Toolbar>
@@ -134,9 +219,7 @@ const Calzado = () => {
         {/* BUSCADOR */}
         <Grid item md={4} sm={12} xs={12}>
           <Box display="flex" height="100%">
-            <Button fullWidth variant="contained" color="secondary">
-              {" "}
-              {/* onClick={handleSearch} */}
+            <Button fullWidth variant="contained" color="secondary" onClick={handleSearch} >
               Buscar
             </Button>
           </Box>

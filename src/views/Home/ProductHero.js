@@ -40,7 +40,7 @@ const ProductHero = () => {
         variant="contained"
         size="large"
         component={Link}
-        to="/sign-up"
+        to="/registro"
         sx={{ minWidth: 200 }}
       >
         Registro

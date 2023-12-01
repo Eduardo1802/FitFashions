@@ -32,27 +32,27 @@ const MediaControlCard = ({ proyecto, handleClickOpen }) => {
           objectFit: "cover",
           "&:hover": { cursor: "pointer" },
         }}
-        image={proyecto.data().url}
-        alt={proyecto.data().modelo}
+        image={proyecto.url}
+        alt={proyecto.modelo}
       />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h5" color="text.secondary">
-            {proyecto.data().modelo}
+            {proyecto.modelo}
           </Typography>
           <Typography
             variant="subtitle1"
             color="text.secondary"
             component="div"
           >
-            {`${proyecto.data().descripcion.slice(0, 100)}...`}
+            {`${proyecto.descripcion.slice(0, 100)}...`}
           </Typography>
           <Typography
             variant="subtitle1"
             color="text.secondary"
             component="div"
           >
-            {`Precio: $${proyecto.data().costo}`}
+            {`Precio: $${proyecto.costo}`}
           </Typography>
         </CardContent>
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>

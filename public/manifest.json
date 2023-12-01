@@ -4,6 +4,12 @@
   "description": "Aplicación de venta de ropa deportavia para el público en general.",
   "icons": [
     {
+      "src": "maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "favicon64.ico",
       "sizes": "64x64",
       "type": "image/x-icon"
